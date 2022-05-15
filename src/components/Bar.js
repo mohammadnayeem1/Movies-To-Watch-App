@@ -5,7 +5,7 @@ export default function Bar(){
     return(
         <nav className="bar">
                 <img src={film} className="icon" />
-                <h3> Some Movies I Like </h3>
+                <h3> Movies to Watch </h3>
         </nav>
     )
 }
