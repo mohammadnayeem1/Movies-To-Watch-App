@@ -10,37 +10,16 @@ export default function App(){
     
     const [listOfMovies, setListofMovies] = React.useState(movData);
     
-    const uniqueTitles = Array.from(new Set(listOfMovies.map(a => a.title)))
-    .map(title => {
-      return listOfMovies.find(a => a.title === title)
-    })
-    
-    console.log(uniqueTitles)
-    
-    const infoElement = uniqueTitles.map(item => {
-        
-        if (item.title)
-        return(
-            <Info 
-                key= {item.key}
-                handleDelete= {handleDelete}
-                {...item}
-                
-            />
-        )
-    })
-    
-
-
-    
     const [count, setCount] = React.useState(0)
 
-     const [formData,setFormData] = React.useState(
+    const [formData,setFormData] = React.useState(
         {
             title: "",
             year: ""
         }
     )
+    const [movie, setMovie] = React.useState({})
+    
 
     function handleChange(event) {
         const {name, value} = event.target
@@ -56,11 +35,6 @@ export default function App(){
 
     }
       
-
-    
-    const [movie, setMovie] = React.useState({})
-    
-    
 
 
     const url =`https://www.omdbapi.com/?t=${formData.title.replace(/ /g, "+")}&y=${formData.year}&plot=full&apikey=399f76ff`
@@ -83,21 +57,38 @@ export default function App(){
     function fetchData(){
         fetch(url)
         .then(res => res.json())
-        //.then(data=> console.log(data))
         .then(data => data.Title ? passMovie(data) : alert("Does not exist"))
 
     }    
     
     useEffect(() => {
-        //console.log(movie);
         setListofMovies(listOfMovies.concat(movie))
     }, [movie])
     
   
 
+    const uniqueTitles = Array.from(new Set(listOfMovies.map(movies => movies.title)))
+    .map(title => {
+      return listOfMovies.find(movies => movies.title === title)
+    })
+    
+    
+    const infoElement = uniqueTitles.map(item => {
+        
+        if (item.title)
+        return(
+            <Info 
+                key= {item.key}
+                handleDelete= {handleDelete}
+                {...item}
+                
+            />
+        )
+    })
+    
+
     function handleDelete(event){
         const title = event.target.name
-        //console.log(title)
         const newList = listOfMovies.filter(item => item.title !== title);
         setListofMovies(newList);
     }

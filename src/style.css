@@ -99,3 +99,28 @@ body {
 .delete{
     margin-left: 20px;
 }
+
+.btn{
+    
+        border: none;
+        margin-left: 10px;
+        background-color: skyblue;
+        color: #fff;
+        letter-spacing: 1px;
+        font-size: .95rem;
+        box-shadow: -3px 5px darken(skyblue, 10%);
+        cursor: pointer;
+}
+
+.delete{
+
+    
+        border: none;
+        margin-left: 10px;
+        background-color: skyblue;
+        color: #fff;
+        letter-spacing: 1px;
+        font-size: .95rem;
+        box-shadow: -3px 5px darken(skyblue, 10%);
+        cursor: pointer;
+}
