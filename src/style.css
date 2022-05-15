@@ -85,3 +85,17 @@ body {
 .Director{
     margin-top: 50px;
 }
+
+.form{
+    padding: 10px 15px;
+    align-items: center;
+}
+
+.formTitle{
+    margin-right: 20px;
+}
+
+
+.delete{
+    margin-left: 20px;
+}

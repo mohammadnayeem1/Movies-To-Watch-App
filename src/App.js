@@ -7,9 +7,18 @@ import "./style.css"
 
 export default function App(){
     
+    
     const [listOfMovies, setListofMovies] = React.useState(movData);
     
-    const infoElement = listOfMovies.map(item =>{
+    const uniqueTitles = Array.from(new Set(listOfMovies.map(a => a.title)))
+    .map(title => {
+      return listOfMovies.find(a => a.title === title)
+    })
+    
+    console.log(uniqueTitles)
+    
+    const infoElement = uniqueTitles.map(item => {
+        
         if (item.title)
         return(
             <Info 
@@ -42,25 +51,14 @@ export default function App(){
 
     function handleSubmit(event) {
         event.preventDefault()
-        handleChange(event)
         fetchData()
-        console.log(movie)
-        movie.title && setCount(count+1)
-        setListofMovies(listOfMovies.concat(movie))
+        movie.title && setCount((count) => count+1)
 
     }
       
 
     
-    const [movie, setMovie] = React.useState({
-        key: 3,
-        title: "Se7en",
-        year: 1995,
-        director: "David Fincher",
-        IMDbUrl: "https://www.imdb.com/title/tt0114369/",
-        description: "Two detectives, a rookie and a veteran, hunt a serial killer who uses the seven deadly sins as his motives.",
-        imageUrl: "https://m.media-amazon.com/images/M/MV5BOTUwODM5MTctZjczMi00OTk4LTg3NWUtNmVhMTAzNTNjYjcyXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg"
-    })
+    const [movie, setMovie] = React.useState({})
     
     
 
@@ -70,32 +68,36 @@ export default function App(){
 
     function passMovie(data){
         setMovie({
+            key: listOfMovies.length,
             title: data.Title,
             year: data.Year,
             director: data.Director,
             IMDbUrl: `https://www.imdb.com/title/${data.imdbID}/`,
             description: data.Plot,
-            imageUrl: data.Poster
+            imageUrl: data.Poster,
+            actors: data.Actors
         })
     }
     
-    
+
     function fetchData(){
         fetch(url)
         .then(res => res.json())
-        .then(data => passMovie(data))
+        //.then(data=> console.log(data))
+        .then(data => data.Title ? passMovie(data) : alert("Does not exist"))
 
     }    
     
+    useEffect(() => {
+        //console.log(movie);
+        setListofMovies(listOfMovies.concat(movie))
+    }, [movie])
     
-    
-    //console.log(movieData)
-    //console.log(movie)
-    //console.log(count)  
+  
 
     function handleDelete(event){
         const title = event.target.name
-        console.log(title)
+        //console.log(title)
         const newList = listOfMovies.filter(item => item.title !== title);
         setListofMovies(newList);
     }
@@ -103,10 +105,9 @@ export default function App(){
     return(
         <div>
             <Bar />
-            <Form handleChange={handleChange} value={formData} fetchData={fetchData} handleSubmit={handleSubmit}/>
+            <Form handleChange={handleChange} value={formData} handleSubmit={handleSubmit}/>
             <section className="movie-list">
             {infoElement}
-            {(count > 0 && movie.title) && <Info {...movie} handleDelete={handleDelete} />}
             </section>
         </div>
     )
